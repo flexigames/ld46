@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js"
 import { mapKeys } from "lodash"
+import Entity from "./entities/Entity"
 
 start()
 
@@ -12,13 +13,19 @@ function start() {
       resources["spritesheet.json"].textures,
       (_, fileName) => fileName.split(".")[0]
     )
-    const sprite = new PIXI.Sprite(textures.heart_full)
-    app.stage.addChild(sprite)
+
+    Entity.init(app.stage, textures)
+
+    new Entity(0, 0, {sprite: "heart_full"})
+    new Entity(100, 100, {sprite: "heart_full"})
+
     app.ticker.add(gameLoop)
+
+    function gameLoop(dt) {
+      Entity.updateAll(dt)
+    }
   }
 }
-
-function gameLoop(dt) {}
 
 function createApp() {
   const app = new PIXI.Application({
