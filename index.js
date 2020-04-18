@@ -3,7 +3,8 @@ import { mapKeys, groupBy, mapValues } from "lodash"
 import Entity from "./entities/Entity"
 import Collider from "./entities/Collider"
 import Player from "./entities/Player"
-import * as input from './lib/input'
+import Plant from "./entities/Plant"
+import * as input from "./lib/input"
 
 start()
 
@@ -19,6 +20,7 @@ function start() {
     input.init()
 
     const player = new Player(2, 2)
+    new Plant(200, 200)
 
     app.ticker.add(gameLoop)
 
@@ -34,7 +36,7 @@ function createApp() {
   const app = new PIXI.Application({
     width: 512,
     height: 512,
-    backgroundColor: 0x150a21,
+    backgroundColor: 0x5c8636,
     antialias: false,
   })
 
@@ -46,19 +48,20 @@ function createApp() {
 }
 
 function parseTextures(rawTextures) {
-  const textures = mapKeys(
-    rawTextures,
-    (_, fileName) => fileName.split(".")[0]
-  )
+  const textures = mapKeys(rawTextures, (_, fileName) => fileName.split(".")[0])
 
-  const animations = mapValues(groupBy(
-    Object.entries(textures)
-      .filter(([key, value]) => key.startsWith('anim_')),
-    ([key, value]) => key.substr(0, key.lastIndexOf('_'))
-  ), frames => frames.map(value => value[1]))
+  const animations = mapValues(
+    groupBy(
+      Object.entries(textures).filter(([key, value]) =>
+        key.startsWith("anim_")
+      ),
+      ([key, value]) => key.substr(0, key.lastIndexOf("_"))
+    ),
+    (frames) => frames.map((value) => value[1])
+  )
 
   return {
     ...textures,
-    ...animations
+    ...animations,
   }
 }
