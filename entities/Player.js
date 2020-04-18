@@ -1,4 +1,5 @@
 import Character from "./Character"
+import play from "../lib/audio"
 
 export default class Player extends Character {
   constructor(x, y, opts = {}) {
@@ -33,6 +34,7 @@ export default class Player extends Character {
   onCollision(entity) {
     if (this.pickupIntent && !this.holding && entity.is("draggable")) {
       this.holding = entity
+      play("cat-hiss")
       entity.heldBy = this
     }
   }

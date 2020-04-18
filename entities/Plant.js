@@ -1,5 +1,5 @@
 import Collider from "./Collider"
-
+import play from "../lib/audio"
 export default class Plant extends Collider {
   constructor(x, y, opts = {}) {
     super(x, y, { sprite: "carnivorous_plant", ...opts })
@@ -16,6 +16,7 @@ export default class Plant extends Collider {
   onCollision(entity) {
     if (entity.is("draggable") && !entity.heldBy) {
       this.health += 20
+      play("snack")
       entity.destroy()
     }
   }

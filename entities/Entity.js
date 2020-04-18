@@ -61,7 +61,6 @@ export default class Entity {
   }
 
   static destroy(entity) {
-    console.log('destroy')
     Entity.children.splice(Entity.children.indexOf(entity), 1)
 
     Entity.world.removeChild(entity.sprite)
