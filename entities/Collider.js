@@ -78,6 +78,7 @@ export default class Collider extends Entity {
   static init() {
     Collider.crash.onCollision((a, b, data) => {
       a.data.entity.onCollision(b.data.entity, data)
+      b.data.entity.onCollision(a.data.entity, data)
     })
   }
 

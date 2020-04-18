@@ -4,8 +4,8 @@ import play from "../lib/audio"
 export default class Player extends Character {
   constructor(x, y, opts = {}) {
     super(x, y, {
-      sprite: "anim_senor_run",
-      animationSpeed: 0.15,
+      sprite: "anim_senor_idle",
+      animationSpeed: 0.01,
       boundingBox: {
         x: 0,
         y: 0,
@@ -48,5 +48,10 @@ export default class Player extends Character {
       play("cat-hiss")
       entity.heldBy = this
     }
+  }
+
+  onMoveChange(isMoving) {
+    this.changeTexture(isMoving ? 'anim_senor_run' : 'anim_senor_idle')
+    this.sprite.animationSpeed = isMoving ? 0.15 : 0.01
   }
 }

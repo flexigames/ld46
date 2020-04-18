@@ -14,7 +14,7 @@ export default class Entity {
     Entity.create(this)
   }
 
-  update(dt) {}
+  update(dt) { }
 
   setPosition(x, y) {
     if (!y) {
@@ -51,6 +51,16 @@ export default class Entity {
     Entity.world.addChild(object)
   }
 
+  changeTexture(textureName) {
+    const texture = Entity.textures[textureName]
+    if (isArray(texture)) {
+      this.sprite.textures = texture
+      this.sprite.play()
+    } else {
+      this.sprite.texture = texture
+    }
+  }
+
   static children = []
 
   static world
@@ -69,7 +79,9 @@ export default class Entity {
   }
 
   static destroy(entity) {
-    Entity.children.splice(Entity.children.indexOf(entity), 1)
+    const entityPos = Entity.children.indexOf(entity)
+    if (entityPos ===  -1) return
+    Entity.children.splice(entityPos, 1)
 
     Entity.world.removeChild(entity.sprite)
   }

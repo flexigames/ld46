@@ -20,17 +20,17 @@ export default class Character extends Collider {
     super.onCollision(entity)
     if (entity.is('obstacle')) {
       this.moveBy(V(-data.overlapV.x, -data.overlapV.y))
-      this.direction = V(0, 0)
     }
   }
 
   setDirection(direction) {
     if (direction.x > 0) this.sprite.scale.x = -1
     if (direction.x < 0) this.sprite.scale.x = 1
+    const isMoving = direction.x !== 0 || direction.y !== 0
+    const wasMoving  = this.direction.x !== 0 || this.direction.y !== 0
+    if (wasMoving !== isMoving) this.onMoveChange(isMoving)
     this.direction = direction
   }
 
-  isMoving() {
-    return this.direction.x !== 0 || this.direction.y !== 0
-  }
+  onMoveChange(isMoving) {}
 }
