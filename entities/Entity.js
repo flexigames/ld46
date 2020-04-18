@@ -1,6 +1,6 @@
 import V from "../lib/vec2"
 import * as PIXI from "pixi.js"
-import {isArray} from 'lodash'
+import { isArray } from 'lodash'
 
 export default class Entity {
   constructor(x, y, opts = {}) {
@@ -14,9 +14,13 @@ export default class Entity {
     Entity.create(this)
   }
 
-  update(dt) {}
+  update(dt) { }
 
   setPosition(x, y) {
+    if (!y) {
+      y = x.y
+      x = x.x
+    }
     this.pos.x = x
     this.pos.y = y
 

@@ -2,6 +2,8 @@ import * as PIXI from "pixi.js"
 import { mapKeys, groupBy, mapValues } from "lodash"
 import Entity from "./entities/Entity"
 import Collider from "./entities/Collider"
+import Player from "./entities/Player"
+import * as input from './lib/input'
 
 start()
 
@@ -14,18 +16,16 @@ function start() {
 
     Entity.init(app.stage, textures)
     Collider.init()
+    input.init()
 
-    const testEntity = new Collider(0, 0, { sprite: "anim_heart_empty" })
-    const i = setInterval(() => testEntity.moveBy(1, 1), 20)
-    testEntity.onCollision = () => clearInterval(i)
-    new Collider(100, 100, { sprite: "anim_heart_empty" })
-
+    const player = new Player(2, 2, { sprite: "anim_heart_empty" })
 
     app.ticker.add(gameLoop)
 
     function gameLoop(dt) {
       Entity.updateAll(dt)
       Collider.check()
+      player.setDirection(input.getDirection())
     }
   }
 }
