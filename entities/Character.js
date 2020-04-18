@@ -21,4 +21,8 @@ export default class Character extends Collider {
     if (direction.x < 0) this.sprite.scale.x = 1
     this.direction = direction
   }
+
+  isMoving() {
+    return this.direction.x !== 0 || this.direction.y !== 0
+  }
 }

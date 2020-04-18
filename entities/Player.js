@@ -3,7 +3,7 @@ import play from "../lib/audio"
 
 export default class Player extends Character {
   constructor(x, y, opts = {}) {
-    super(x, y, { sprite: "anim_senor_idle", animationSpeed: 0.01, ...opts })
+    super(x, y, { sprite: "anim_senor_run", animationSpeed: 0.2, ...opts })
 
     this.pickupIntent = false
   }
