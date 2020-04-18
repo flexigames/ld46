@@ -10,7 +10,7 @@ import Camera from "./lib/camera"
 import { times, random } from "lodash"
 import Obstacle from "./entities/Obstacle"
 import createWorld from "./lib/world"
-import HUD from "./lib/HUD"
+import HUD from "./lib/hud"
 
 start()
 

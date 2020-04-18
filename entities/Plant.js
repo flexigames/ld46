@@ -22,7 +22,7 @@ export default class Plant extends Draggable {
   onCollision(entity, data) {
     super.onCollision(entity, data)
     if (entity.is("draggable") && !entity.heldBy) {
-      this.health += 20
+      this.health = Math.min(this.maxHealth, this.health + 20)
       play("snack")
       entity.destroy()
     }
