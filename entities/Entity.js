@@ -16,6 +16,20 @@ export default class Entity {
 
   update(dt) {}
 
+  setPosition(x, y) {
+    this.pos.x = x
+    this.pos.y = y
+
+    if (this.sprite) {
+      this.sprite.x = x
+      this.sprite.y = y
+    }
+  }
+
+  moveBy(x, y) {
+    this.setPosition(this.pos.x + x, this.pos.y + y)
+  }
+
   destroy() {
     Entity.destroy(this)
   }

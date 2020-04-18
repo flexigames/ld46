@@ -13,7 +13,8 @@ function start() {
 
     Entity.init(app.stage, textures)
 
-    new Entity(0, 0, { sprite: "anim_heart_empty" })
+    const testEntity = new Entity(0, 0, { sprite: "anim_heart_empty" })
+    setInterval(() => testEntity.moveBy(1, 1), 20)
     new Entity(100, 100, { sprite: "anim_heart_empty" })
 
     app.ticker.add(gameLoop)
