@@ -9,6 +9,8 @@ import * as input from "./lib/input"
 import Camera from "./lib/camera"
 import { times, random } from "lodash"
 import Obstacle from "./entities/Obstacle"
+import createWorld from "./lib/world"
+import HUD from "./lib/HUD"
 
 start()
 
@@ -25,23 +27,14 @@ function start() {
     Entity.init(camera.getStage(), textures)
     Collider.init()
 
-    const player = new Player(100, 100)
+    createWorld(10, 10)
+
+    const player = new Player(5 * 500, 5 * 500 + 350)
+    const plant = new Plant(5 * 500, 5 * 500 + 300)
+
+    const hud = new HUD(app.stage, textures, { plant })
 
     camera.follow(player)
-
-    new Plant(200, 200)
-    new Obstacle(100, 100, { sprite: "house", boundingBox: {width: 1, height: 0.8} })
-    new Obstacle(100, 140, { sprite: "mailbox",  boundingBox: {width: 1, height: 0.2}  })
-    times(12).forEach((i) => new Obstacle(24 + i * 48, 300, {
-      sprite: "fence", boundingBox: {
-        width: 1,
-        height: 0.2
-      },
-    }))
-    times(10).forEach(() => new Cat(random(0, 400), random(0, 300)))
-    times(12).forEach((i) => new Entity(i * 48, 352, { sprite: "sidewalk" }))
-    times(12).forEach((i) => new Entity(i * 48, 400, { sprite: "street" }))
-    times(12).forEach((i) => new Entity(i * 48, 400, { sprite: "street" }))
 
     input.init(player)
     app.ticker.add(gameLoop)
@@ -51,6 +44,7 @@ function start() {
       Collider.check()
       player.setDirection(input.getDirection())
       camera.update(dt)
+      hud.update()
     }
   }
 }
@@ -59,7 +53,7 @@ function createApp() {
   const app = new PIXI.Application({
     width: 512,
     height: 512,
-    backgroundColor: 0x5c8636,
+    backgroundColor: 0x49a63c,
     antialias: false,
   })
 

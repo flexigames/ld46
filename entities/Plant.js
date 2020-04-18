@@ -10,12 +10,13 @@ export default class Plant extends Draggable {
       ...opts,
     })
 
+    this.maxHealth = 100
     this.health = 100
   }
 
   update(dt) {
     super.update(dt)
-    this.health -= 0.1
+    this.health = Math.max(0, this.health - 0.02)
   }
 
   onCollision(entity, data) {

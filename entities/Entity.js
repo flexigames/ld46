@@ -4,17 +4,28 @@ import { isArray } from "lodash"
 
 export default class Entity {
   constructor(x, y, opts = {}) {
-    const { tags = [], sprite, animationSpeed = 0.1 } = opts
+    const {
+      tags = [],
+      sprite,
+      animationSpeed = 0.1,
+      spriteAnchor = [0.5, 1],
+    } = opts
 
     this.pos = V(x, y)
 
     this.tags = tags
-    this.sprite = Entity.createSprite(x, y, sprite, animationSpeed)
+    this.sprite = Entity.createSprite(
+      x,
+      y,
+      sprite,
+      animationSpeed,
+      spriteAnchor
+    )
 
     Entity.create(this)
   }
 
-  update(dt) { }
+  update(dt) {}
 
   setPosition(x, y) {
     if (!y) {
@@ -80,7 +91,7 @@ export default class Entity {
 
   static destroy(entity) {
     const entityPos = Entity.children.indexOf(entity)
-    if (entityPos ===  -1) return
+    if (entityPos === -1) return
     Entity.children.splice(entityPos, 1)
 
     Entity.world.removeChild(entity.sprite)
@@ -90,7 +101,7 @@ export default class Entity {
     Entity.children.forEach((it) => it.update(dt))
   }
 
-  static createSprite(x, y, textureName, animationSpeed) {
+  static createSprite(x, y, textureName, animationSpeed, spriteAnchor) {
     let sprite
     const texture = Entity.textures[textureName]
     if (isArray(texture)) {
@@ -105,7 +116,7 @@ export default class Entity {
     sprite.y = y
     sprite.zIndex = y
 
-    sprite.anchor.set(0.5, 1)
+    sprite.anchor.set(spriteAnchor[0], spriteAnchor[1])
 
     return sprite
   }
