@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js"
 import { mapKeys, groupBy, mapValues } from "lodash"
 import Entity from "./entities/Entity"
+import Collider from "./entities/Collider"
 
 start()
 
@@ -12,15 +13,19 @@ function start() {
     const textures = parseTextures(resources["spritesheet.json"].textures)
 
     Entity.init(app.stage, textures)
+    Collider.init()
 
-    const testEntity = new Entity(0, 0, { sprite: "anim_heart_empty" })
-    setInterval(() => testEntity.moveBy(1, 1), 20)
-    new Entity(100, 100, { sprite: "anim_heart_empty" })
+    const testEntity = new Collider(0, 0, { sprite: "anim_heart_empty" })
+    const i = setInterval(() => testEntity.moveBy(1, 1), 20)
+    testEntity.onCollision = () => clearInterval(i)
+    new Collider(100, 100, { sprite: "anim_heart_empty" })
+
 
     app.ticker.add(gameLoop)
 
     function gameLoop(dt) {
       Entity.updateAll(dt)
+      Collider.check()
     }
   }
 }
@@ -50,7 +55,7 @@ function parseTextures(rawTextures) {
     Object.entries(textures)
       .filter(([key, value]) => key.startsWith('anim_')),
     ([key, value]) => key.substr(0, key.lastIndexOf('_'))
-    ), frames => frames.map(value => value[1]))
+  ), frames => frames.map(value => value[1]))
 
   return {
     ...textures,
