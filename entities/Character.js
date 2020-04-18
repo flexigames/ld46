@@ -3,7 +3,7 @@ import V from '../lib/vec2'
 
 export default class Character extends Collider {
   constructor(x, y, opts = {}) {
-    super(x, y, opts)
+    super(x, y, {opts, sprite: "anim_heart_empty"})
     const { speed = 2 } = opts
 
     this.speed = speed

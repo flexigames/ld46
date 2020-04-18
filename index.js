@@ -18,7 +18,7 @@ function start() {
     Collider.init()
     input.init()
 
-    const player = new Player(2, 2, { sprite: "anim_heart_empty" })
+    const player = new Player(2, 2)
 
     app.ticker.add(gameLoop)
 
