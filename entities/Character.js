@@ -5,7 +5,7 @@ export default class Character extends Collider {
   constructor(x, y, opts = {}) {
     super(x, y, { sprite: "anim_heart_empty", ...opts })
 
-    const { speed = 2 } = opts
+    const { speed = 4 } = opts
 
     this.speed = speed
     this.direction = V(0, 0)
