@@ -17,6 +17,8 @@ export default class Character extends Collider {
   }
 
   setDirection(direction) {
+    if (direction.x > 0) this.sprite.scale.x = -1
+    if (direction.x < 0) this.sprite.scale.x = 1
     this.direction = direction
   }
 }

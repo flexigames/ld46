@@ -1,20 +1,20 @@
 import V from "../lib/vec2"
 import * as PIXI from "pixi.js"
-import { isArray } from 'lodash'
+import { isArray } from "lodash"
 
 export default class Entity {
   constructor(x, y, opts = {}) {
-    const { tags = [], sprite } = opts
+    const { tags = [], sprite, animationSpeed = 0.1 } = opts
 
     this.pos = V(x, y)
 
     this.tags = tags
-    this.sprite = Entity.createSprite(x, y, sprite)
+    this.sprite = Entity.createSprite(x, y, sprite, animationSpeed)
 
     Entity.create(this)
   }
 
-  update(dt) { }
+  update(dt) {}
 
   setPosition(x, y) {
     if (!y) {
@@ -27,6 +27,7 @@ export default class Entity {
     if (this.sprite) {
       this.sprite.x = x
       this.sprite.y = y
+      this.sprite.zIndex = y
     }
   }
 
@@ -36,6 +37,10 @@ export default class Entity {
 
   destroy() {
     Entity.destroy(this)
+  }
+
+  is(tag) {
+    return this.tags.includes(tag)
   }
 
   static children = []
@@ -56,6 +61,7 @@ export default class Entity {
   }
 
   static destroy(entity) {
+    console.log('destroy')
     Entity.children.splice(Entity.children.indexOf(entity), 1)
 
     Entity.world.removeChild(entity.sprite)
@@ -65,19 +71,22 @@ export default class Entity {
     Entity.children.forEach((it) => it.update(dt))
   }
 
-  static createSprite(x, y, textureName) {
+  static createSprite(x, y, textureName, animationSpeed) {
     let sprite
     const texture = Entity.textures[textureName]
     if (isArray(texture)) {
       sprite = new PIXI.AnimatedSprite(texture)
       sprite.play()
-      sprite.animationSpeed = 0.1
+      sprite.animationSpeed = animationSpeed
     } else {
       sprite = new PIXI.Sprite(texture)
     }
 
     sprite.x = x
     sprite.y = y
+    sprite.zIndex = y
+
+    sprite.anchor.set(0.5, 1)
 
     return sprite
   }

@@ -2,9 +2,11 @@ import * as PIXI from "pixi.js"
 import { mapKeys, groupBy, mapValues } from "lodash"
 import Entity from "./entities/Entity"
 import Collider from "./entities/Collider"
+import Cat from "./entities/Cat"
 import Player from "./entities/Player"
 import Plant from "./entities/Plant"
 import * as input from "./lib/input"
+import { times, random } from "lodash"
 
 start()
 
@@ -15,16 +17,19 @@ function start() {
   function setup(loader, resources) {
     const textures = parseTextures(resources["spritesheet.json"].textures)
 
+    app.stage.sortableChildren = true
     Entity.init(app.stage, textures)
     Collider.init()
-    input.init()
 
-    const player = new Player(2, 2)
+    const player = new Player(100, 100)
     new Plant(200, 200)
+    times(10).forEach(() => new Cat(random(0, 400), random(0, 400)))
 
+    input.init(player)
     app.ticker.add(gameLoop)
 
     function gameLoop(dt) {
+      // console.log(Entity.children)
       Entity.updateAll(dt)
       Collider.check()
       player.setDirection(input.getDirection())
