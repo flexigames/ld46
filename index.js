@@ -8,6 +8,7 @@ import Plant from "./entities/Plant"
 import * as input from "./lib/input"
 import Camera from "./lib/camera"
 import { times, random } from "lodash"
+import Obstacle from "./entities/Obstacle"
 
 start()
 
@@ -29,9 +30,14 @@ function start() {
     camera.follow(player)
 
     new Plant(200, 200)
-    new Entity(100, 100, { sprite: "house" })
-    new Entity(100, 140, { sprite: "mailbox" })
-    times(12).forEach((i) => new Entity(24 + i * 48, 300, { sprite: "fence" }))
+    new Obstacle(100, 100, { sprite: "house", boundingBox: {width: 1, height: 0.8} })
+    new Obstacle(100, 140, { sprite: "mailbox",  boundingBox: {width: 1, height: 0.2}  })
+    times(12).forEach((i) => new Obstacle(24 + i * 48, 300, {
+      sprite: "fence", boundingBox: {
+        width: 1,
+        height: 0.2
+      },
+    }))
     times(10).forEach(() => new Cat(random(0, 400), random(0, 300)))
     times(12).forEach((i) => new Entity(i * 48, 352, { sprite: "sidewalk" }))
     times(12).forEach((i) => new Entity(i * 48, 400, { sprite: "street" }))
@@ -41,7 +47,6 @@ function start() {
     app.ticker.add(gameLoop)
 
     function gameLoop(dt) {
-      // console.log(Entity.children)
       Entity.updateAll(dt)
       Collider.check()
       player.setDirection(input.getDirection())

@@ -3,7 +3,17 @@ import play from "../lib/audio"
 
 export default class Player extends Character {
   constructor(x, y, opts = {}) {
-    super(x, y, { sprite: "anim_senor_run", animationSpeed: 0.2, ...opts })
+    super(x, y, {
+      sprite: "anim_senor_run",
+      animationSpeed: 0.15,
+      boundingBox: {
+        x: 0,
+        y: 0,
+        width: 0.9,
+        height: 0.2
+      },
+      ...opts
+    })
 
     this.pickupIntent = false
   }
@@ -31,7 +41,8 @@ export default class Player extends Character {
     }
   }
 
-  onCollision(entity) {
+  onCollision(entity, data) {
+    super.onCollision(entity, data)
     if (this.pickupIntent && !this.holding && entity.is("draggable")) {
       this.holding = entity
       play("cat-hiss")

@@ -32,6 +32,10 @@ export default class Entity {
   }
 
   moveBy(x, y) {
+    if (!y) {
+      y = x.y
+      x = x.x
+    }
     this.setPosition(this.pos.x + x, this.pos.y + y)
   }
 
@@ -41,6 +45,10 @@ export default class Entity {
 
   is(tag) {
     return this.tags.includes(tag)
+  }
+
+  addToWorld(object) {
+    Entity.world.addChild(object)
   }
 
   static children = []
