@@ -4,7 +4,11 @@ import Draggable from "./Draggable"
 
 export default class Plant extends Draggable {
   constructor(x, y, opts = {}) {
-    super(x, y, { sprite: "carnivorous_plant", ...opts })
+    super(x, y, {
+      sprite: "anim_carnivorous_plant_idle",
+      animationSpeed: 0.04,
+      ...opts,
+    })
 
     this.health = 100
   }
