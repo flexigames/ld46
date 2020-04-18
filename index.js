@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js"
-import { mapKeys } from "lodash"
+import { mapKeys, groupBy, mapValues } from "lodash"
 import Entity from "./entities/Entity"
 
 start()
@@ -9,15 +9,12 @@ function start() {
   app.loader.add("spritesheet.json").load(setup)
 
   function setup(loader, resources) {
-    const textures = mapKeys(
-      resources["spritesheet.json"].textures,
-      (_, fileName) => fileName.split(".")[0]
-    )
+    const textures = parseTextures(resources["spritesheet.json"].textures)
 
     Entity.init(app.stage, textures)
 
-    new Entity(0, 0, {sprite: "heart_full"})
-    new Entity(100, 100, {sprite: "heart_full"})
+    new Entity(0, 0, { sprite: "anim_heart_empty" })
+    new Entity(100, 100, { sprite: "anim_heart_empty" })
 
     app.ticker.add(gameLoop)
 
@@ -40,4 +37,22 @@ function createApp() {
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
 
   return app
+}
+
+function parseTextures(rawTextures) {
+  const textures = mapKeys(
+    rawTextures,
+    (_, fileName) => fileName.split(".")[0]
+  )
+
+  const animations = mapValues(groupBy(
+    Object.entries(textures)
+      .filter(([key, value]) => key.startsWith('anim_')),
+    ([key, value]) => key.substr(0, key.lastIndexOf('_'))
+    ), frames => frames.map(value => value[1]))
+
+  return {
+    ...textures,
+    ...animations
+  }
 }
