@@ -23,7 +23,13 @@ function start() {
 
     const player = new Player(100, 100)
     new Plant(200, 200)
-    times(10).forEach(() => new Cat(random(0, 400), random(0, 400)))
+    new Entity(100, 100, { sprite: "house" })
+    new Entity(100, 140, { sprite: "mailbox" })
+    times(12).forEach((i) => new Entity(24 + i * 48, 300, { sprite: "fence" }))
+    times(10).forEach(() => new Cat(random(0, 400), random(0, 300)))
+    times(12).forEach((i) => new Entity(i * 48, 352, { sprite: "sidewalk" }))
+    times(12).forEach((i) => new Entity(i * 48, 400, { sprite: "street" }))
+    times(12).forEach((i) => new Entity(i * 48, 448, { sprite: "street" }))
 
     input.init(player)
     app.ticker.add(gameLoop)
