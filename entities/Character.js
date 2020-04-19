@@ -4,7 +4,7 @@ import play from "../lib/audio"
 
 export default class Character extends Collider {
   constructor(x, y, opts = {}) {
-    const {walkSprite, idleSprite} = opts
+    const { walkSprite, idleSprite } = opts
     super(x, y, { sprite: idleSprite, ...opts })
 
     const { holdingSpeed = 2, walkingSpeed = 4 } = opts
@@ -30,18 +30,18 @@ export default class Character extends Collider {
 
   onCollision(entity, data) {
     super.onCollision(entity)
-    if (entity.is('obstacle')) {
+    if (entity.is("obstacle")) {
       this.moveBy(V(-data.overlapV.x, -data.overlapV.y))
     }
   }
 
   setDirection(direction) {
     direction = direction.normalize()
-  
+
     if (direction.x > 0) this.sprite.scale.x = -1
     if (direction.x < 0) this.sprite.scale.x = 1
     const isMoving = direction.x !== 0 || direction.y !== 0
-    const wasMoving  = this.direction.x !== 0 || this.direction.y !== 0
+    const wasMoving = this.direction.x !== 0 || this.direction.y !== 0
     if (wasMoving !== isMoving) this.onMoveChange(isMoving)
     this.direction = direction
   }
@@ -57,7 +57,6 @@ export default class Character extends Collider {
 
   pickup(entity) {
     this.holding = entity
-    play("cat-hiss")
     entity.heldBy = this
     this.setSpeed(this.holdingSpeed)
   }

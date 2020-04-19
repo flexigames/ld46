@@ -2,16 +2,12 @@ import * as PIXI from "pixi.js"
 import { mapKeys, groupBy, mapValues } from "lodash"
 import Entity from "./entities/Entity"
 import Collider from "./entities/Collider"
-import Cat from "./entities/Cat"
 import Player from "./entities/Player"
 import Plant from "./entities/Plant"
 import * as input from "./lib/input"
 import Camera from "./lib/camera"
-import { times, random } from "lodash"
-import Obstacle from "./entities/Obstacle"
 import createWorld from "./lib/world"
 import HUD from "./lib/hud"
-import Enemy from "./entities/Enemy"
 
 start()
 
@@ -29,7 +25,6 @@ function start() {
     Collider.init()
 
     const player = new Player(5 * 500, 5 * 500 + 350)
-    new Cat(player.pos.x, player.pos.y + 100)
     const plant = new Plant(5 * 500, 5 * 500 + 300)
 
     createWorld(10, 10)
