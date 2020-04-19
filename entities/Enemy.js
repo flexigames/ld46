@@ -21,16 +21,22 @@ export default class Enemy extends Character {
         this.detectionRange = 220
         this.cooldownRange = 270
         this.following = false
+        this.knowsPlayer = false
 
+        this.createSightLine()
+
+
+        setInterval(() => {
+            this.sprite.scale.x = -this.sprite.scale.x
+        }, 3000)
+    }
+
+    createSightLine() {
         const line = new PIXI.Graphics()
         this.sightLine = line
         this.sightLine.zIndex = 90000
         this.sightLine.alpha = 0.2
         Enemy.world.addChild(line)
-
-        setInterval(() => {
-            this.sprite.scale.x = -this.sprite.scale.x
-        }, 3000)
     }
 
     update(dt) {
@@ -54,11 +60,14 @@ export default class Enemy extends Character {
             this.sightLine.visible = false
         }
 
+        const wouldFollow = this.knowsPlayer || this.player.holding
+
         if (
-            (this.player.holding && this.detectsPlayer()) ||
+            (wouldFollow && this.detectsPlayer()) ||
             (this.following && this.pos.distance(this.player.pos) < this.cooldownRange)
         ) {
             this.following = true
+            this.knowsPlayer = true
             const direction = this.player.pos.subtract(this.pos)
             this.setDirection(direction)
         } else {
