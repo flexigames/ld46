@@ -106,6 +106,7 @@ export default class Entity {
   }
 
   static createSprite(x, y, textureName, animationSpeed, spriteAnchor) {
+    spriteAnchor = spriteAnchor || [0.5, 1]
     let sprite
     const texture = Entity.textures[textureName]
     if (isArray(texture)) {

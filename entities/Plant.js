@@ -1,6 +1,7 @@
 import Collider from "./Collider"
 import play from "../lib/audio"
 import Draggable from "./Draggable"
+import  * as PIXI from 'pixi.js'
 
 export default class Plant extends Draggable {
   constructor(x, y, opts = {}) {
@@ -12,13 +13,32 @@ export default class Plant extends Draggable {
 
     this.addTag('plant')
 
+    this.wants = 'cat'
+
+    this.createBubble()
+
     this.maxHealth = 100
     this.health = 100
+  }
+
+  createBubble() {
+    this.thoughtBubble = new PIXI.Container()
+    this.sprite.addChild(this.thoughtBubble)
+
+    const bubble = new PIXI.Graphics()
+    bubble.beginFill(0xffffff)
+    bubble.drawRoundedRect(-28, -123, 56, 56, 10)
+    bubble.endFill()
+    this.thoughtBubble.addChild(bubble)
+    this.wantsSprite = Plant.createSprite(0, -70, this.wants)
+
+    this.thoughtBubble.addChild(this.wantsSprite)
   }
 
   update(dt) {
     super.update(dt)
     this.health = Math.max(0, this.health - 0.02)
+    this.thoughtBubble.y = Math.round(Math.sin(Date.now()/ 350) * 2) * 2
   }
 
   onCollision(entity, data) {
