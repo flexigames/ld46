@@ -62,7 +62,8 @@ export default class Entity {
     Entity.world.addChild(object)
   }
 
-  changeTexture(textureName) {
+  changeTexture(textureName, sprite) {
+    sprite = sprite || this.sprite
     const texture = Entity.textures[textureName]
     if (isArray(texture)) {
       this.sprite.textures = texture

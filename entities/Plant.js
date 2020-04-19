@@ -3,6 +3,10 @@ import play from "../lib/audio"
 import Draggable from "./Draggable"
 import  * as PIXI from 'pixi.js'
 
+import {sample}  from 'lodash'
+
+const possibleSnacks = ['cat', 'pie']
+
 export default class Plant extends Draggable {
   constructor(x, y, opts = {}) {
     super(x, y, {
@@ -13,7 +17,7 @@ export default class Plant extends Draggable {
 
     this.addTag('plant')
 
-    this.wants = 'anim_grandpa'
+    this.wants = sample(possibleSnacks)
 
     this.createBubble()
 
@@ -30,7 +34,7 @@ export default class Plant extends Draggable {
     bubble.drawRoundedRect(-28, -123, 56, 56, 10)
     bubble.endFill()
     this.thoughtBubble.addChild(bubble)
-    this.wantsSprite = Plant.createSprite(0, -120, this.wants, 0, [0.5, 0])
+    this.wantsSprite = Plant.createSprite(0, -95, this.wants, 0, [0.5, 0.5])
 
     const mask = bubble.clone()
 
@@ -46,12 +50,20 @@ export default class Plant extends Draggable {
     this.thoughtBubble.y = Math.round(Math.sin(Date.now()/ 350) * 2) * 2
   }
 
+  setWants(wants) {
+    this.wants = wants
+    this.wantsSprite.texture = Plant.textures[wants]
+  }
+
   onCollision(entity, data) {
     super.onCollision(entity, data)
     if (entity.is("draggable") && !entity.heldBy) {
       this.health = Math.min(this.maxHealth, this.health + 20)
       play("snack")
       entity.destroy()
+      if (entity.is(this.wants)) {
+        this.setWants(sample(possibleSnacks))
+      }
     }
   }
 }

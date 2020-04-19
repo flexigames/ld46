@@ -3,9 +3,10 @@ import V from "../lib/vec2"
 
 export default class Possession extends Draggable {
   constructor(x, y, opts = {}) {
+    const {sprite} = opts
     super(x, y, opts)
 
-    this.addTag("cat")
+    this.addTag(sprite)
     this.startPos = V(x, y)
   }
 
