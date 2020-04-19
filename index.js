@@ -11,6 +11,7 @@ import { times, random } from "lodash"
 import Obstacle from "./entities/Obstacle"
 import createWorld from "./lib/world"
 import HUD from "./lib/hud"
+import Enemy from "./entities/Enemy"
 
 start()
 
@@ -27,10 +28,11 @@ function start() {
     Entity.init(camera.getStage(), textures)
     Collider.init()
 
-    createWorld(10, 10)
-
     const player = new Player(5 * 500, 5 * 500 + 350)
+    new Enemy(5 * 500 + 100, 5 * 500 + 350)
     const plant = new Plant(5 * 500, 5 * 500 + 300)
+
+    createWorld(10, 10)
 
     const hud = new HUD(app.stage, textures, { plant })
 

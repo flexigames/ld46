@@ -127,4 +127,7 @@ export default class Entity {
       entity.tags.some((it) => tag.includes(it))
     )
   }
+  static findOne(tag) {
+    return Entity.find(tag)?.[0]
+  }
 }

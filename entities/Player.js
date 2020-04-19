@@ -12,6 +12,7 @@ export default class Player extends Character {
         width: 0.9,
         height: 0.2
       },
+      tags: ['player'],
       ...opts
     })
 
@@ -35,23 +36,42 @@ export default class Player extends Character {
     if (this.pickupIntent) {
       this.pickupIntent = false
     } else if (this.holding) {
-      this.holding.setPosition(this.pos.x, this.pos.y + 12)
-      this.holding.heldBy = null
-      this.holding = null
+      this.onDrop(this.holding)
     }
+  }
+
+  onPickup(entity) {
+    this.holding = entity
+    play("cat-hiss")
+    entity.heldBy = this
+    this.setSpeed(2)
+  }
+
+  onDrop(entity) {
+    this.holding.setPosition(this.pos.x, this.pos.y + 12)
+    this.holding.heldBy = null
+    this.holding = null
+    this.setSpeed(4)
   }
 
   onCollision(entity, data) {
     super.onCollision(entity, data)
     if (this.pickupIntent && !this.holding && entity.is("draggable")) {
-      this.holding = entity
-      play("cat-hiss")
-      entity.heldBy = this
+      this.onPickup(entity)
+    } else if (entity.is('enemy')) {
+      // this.destroy()
+      // TODO: Restart and Game Over
     }
   }
 
+  setSpeed(speed) {
+    this.speed = speed
+    if (this.isMoving) this.sprite.animationSpeed = this.speed / 25
+  }
+
   onMoveChange(isMoving) {
+    this.isMoving = isMoving
     this.changeTexture(isMoving ? 'anim_senor_run' : 'anim_senor_idle')
-    this.sprite.animationSpeed = isMoving ? 0.15 : 0.01
+    this.sprite.animationSpeed = isMoving ? this.speed / 25 : 0.01
   }
 }

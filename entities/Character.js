@@ -24,6 +24,8 @@ export default class Character extends Collider {
   }
 
   setDirection(direction) {
+    direction = direction.normalize()
+  
     if (direction.x > 0) this.sprite.scale.x = -1
     if (direction.x < 0) this.sprite.scale.x = 1
     const isMoving = direction.x !== 0 || direction.y !== 0
