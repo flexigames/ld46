@@ -4,7 +4,7 @@ import * as PIXI from 'pixi.js'
 
 export default class Enemy extends Character {
     constructor(x, y, opts = {}) {
-        const {pet} = opts
+        const { pet } = opts
         super(x, y, {
             walkSprite: "anim_grandpa",
             idleSprite: "anim_grandpa",
@@ -65,22 +65,24 @@ export default class Enemy extends Character {
     followPlayerInRange() {
         const detectedTarget = this.detectsTarget()
 
-        if (detectedTarget) {
-            this.showLineSight(detectedTarget)
-        } else if (this.following) {
+        if (this.following) {
             this.showLineSight(this.following)
+        } else if (detectedTarget) {
+            this.showLineSight(detectedTarget)
         } else {
             this.hideLineSight()
         }
 
         const wouldFollow = detectedTarget !== this.player || this.knowsPlayer || this.player.holding
 
-        if (this.following && this.pos.distance(this.following) < this.cooldownRange) {
+        if (this.following && this.pos.distance(this.following.pos) < this.cooldownRange) {
             this.setDirection(this.following.pos.subtract(this.pos))
         } else if (wouldFollow && detectedTarget) {
             if (detectedTarget !== this.pet) this.drop()
-            this.following = detectedTarget
-            this.knowsPlayer = detectedTarget === this.player
+            if (detectedTarget === this.player) {
+                this.knowsPlayer = true
+                this.following = this.player
+            }
             this.setDirection(detectedTarget.pos.subtract(this.pos))
             this.pickupIntent = detectedTarget === this.pet
         } else {
@@ -132,7 +134,7 @@ export default class Enemy extends Character {
     onCollision(entity, data) {
         super.onCollision(entity, data)
         if (this.pickupIntent && entity === this.pet) {
-          this.onPickup(entity)
+            this.onPickup(entity)
         }
     }
 
