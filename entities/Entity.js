@@ -14,6 +14,7 @@ export default class Entity {
     this.pos = V(x, y)
 
     this.tags = tags
+    this.addTag(sprite)
     this.sprite = Entity.createSprite(
       x,
       y,

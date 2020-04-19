@@ -5,7 +5,7 @@ import  * as PIXI from 'pixi.js'
 
 import {sample}  from 'lodash'
 
-const possibleSnacks = ['cat', 'pie']
+const possibleSnacks = ['anim_rat', 'cat', 'pie']
 
 export default class Plant extends Draggable {
   constructor(x, y, opts = {}) {
