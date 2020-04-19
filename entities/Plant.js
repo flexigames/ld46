@@ -7,6 +7,7 @@ export default class Plant extends Draggable {
     super(x, y, {
       sprite: "anim_carnivorous_plant_idle",
       animationSpeed: 0.04,
+      tags: ['plant'],
       ...opts,
     })
 

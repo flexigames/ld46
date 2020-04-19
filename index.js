@@ -29,8 +29,10 @@ function start() {
     Collider.init()
 
     const player = new Player(5 * 500, 5 * 500 + 350)
-    new Enemy(5 * 500 + 100, 5 * 500 + 350)
     const plant = new Plant(5 * 500, 5 * 500 + 300)
+    const street = new Entity(5 * 500, 5 * 500, {sprite: "street"})
+    street.sprite.zIndex = 0
+
 
     createWorld(10, 10)
 
