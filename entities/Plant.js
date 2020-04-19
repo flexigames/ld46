@@ -7,23 +7,23 @@ import { sample } from "lodash"
 
 const snacks = [
   {
+    tag: "pie",
+    sprite: "pie",
+  },
+  {
     tag: "rat",
     sprite: "anim_rat_01",
   },
   {
     tag: "cat",
     sprite: "cat",
-  },
-  {
-    tag: "pie",
-    sprite: "pie",
-  },
+  }
 ]
 
 export default class Plant extends Draggable {
   constructor(x, y, opts = {}) {
     super(x, y, {
-      sprite: "anim_carnivorous_plant_idle",
+      sprite: "anim_plant_small",
       animationSpeed: 0.04,
       ...opts,
     })
@@ -36,6 +36,8 @@ export default class Plant extends Draggable {
 
     this.maxHealth = 100
     this.health = 100
+
+    this.numberFed = 0
   }
 
   createBubble() {
@@ -64,7 +66,7 @@ export default class Plant extends Draggable {
     super.update(dt)
     this.health = Math.max(0, this.health - 0.02)
     this.thoughtBubble.y = Math.round(Math.sin(Date.now() / 350) * 2) * 2
-  }
+   }
 
   setWants(wants) {
     this.wants = wants
@@ -73,12 +75,14 @@ export default class Plant extends Draggable {
 
   onCollision(entity, data) {
     super.onCollision(entity, data)
-    if (entity.is("draggable") && !entity.heldBy) {
+    if (entity.is("draggable") && !entity.heldBy && entity.is(this.wants.tag)) {
       this.health = Math.min(this.maxHealth, this.health + 20)
       play("snack")
       entity.destroy()
-      if (entity.is(this.wants.tag)) {
-        this.setWants(sample(snacks))
+      this.setWants(sample(snacks))
+      this.numberFed++
+      if (this.numberFed >= 2) {
+        this.changeTexture('anim_carnivorous_plant_idle')
       }
     }
   }
