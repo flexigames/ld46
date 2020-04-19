@@ -29,6 +29,7 @@ function start() {
     Collider.init()
 
     const player = new Player(5 * 500, 5 * 500 + 350)
+    new Cat(player.pos.x, player.pos.y + 100)
     const plant = new Plant(5 * 500, 5 * 500 + 300)
     const street = new Entity(5 * 470, 5 * 568, { sprite: "street-horizontal" })
     const street2 = new Entity(5 * 470 + 3 * 128, 5 * 568, {

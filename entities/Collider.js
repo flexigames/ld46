@@ -69,10 +69,6 @@ export default class Collider extends Entity {
     this.debugRectangle.rotation = this.sprite.rotation
   }
 
-  isObstacle() {
-    return false
-  }
-
   static crash = new Crash()
 
   static check() {

@@ -4,9 +4,11 @@ import * as PIXI from 'pixi.js'
 
 export default class Enemy extends Character {
     constructor(x, y, opts = {}) {
+        const {pet} = opts
         super(x, y, {
-            sprite: "anim_grandpa",
-            speed: 2,
+            walkSprite: "anim_grandpa",
+            idleSprite: "anim_grandpa",
+            walkingSpeed: 2,
             animationSpeed: 0,
             boundingBox: {
                 x: 0,
@@ -19,6 +21,7 @@ export default class Enemy extends Character {
         })
         this.player = Character.findOne('player')
         this.plant = Character.findOne('plant')
+        this.pet = pet
         this.detectionRange = 220
         this.cooldownRange = 270
         this.following = false
@@ -40,8 +43,15 @@ export default class Enemy extends Character {
 
     update(dt) {
         super.update(dt)
-        if (!this.following) this.idle(dt)
+        if (!this.following && !this.holding) this.idle(dt)
         this.followPlayerInRange()
+        if (this.holding) {
+            if (this.pet.startPos.distance(this.pos) < 60) {
+                this.drop()
+                this.pet.startPos = V(this.pet.pos.x, this.pet.pos.y)
+            }
+            if (!this.following) this.setDirection(this.pet.startPos.subtract(this.pos))
+        }
     }
 
     idle(dt) {
@@ -63,18 +73,25 @@ export default class Enemy extends Character {
             this.hideLineSight()
         }
 
-        const wouldFollow = detectedTarget === this.plant || this.knowsPlayer || this.player.holding
+        const wouldFollow = detectedTarget !== this.player || this.knowsPlayer || this.player.holding
 
         if (this.following && this.pos.distance(this.following) < this.cooldownRange) {
             this.setDirection(this.following.pos.subtract(this.pos))
         } else if (wouldFollow && detectedTarget) {
+            if (detectedTarget !== this.pet) this.drop()
             this.following = detectedTarget
             this.knowsPlayer = true
             this.setDirection(detectedTarget.pos.subtract(this.pos))
+            this.pickupIntent = detectedTarget === this.pet
         } else {
             this.following = false
             this.setDirection(V(0, 0))
         }
+    }
+
+    drop() {
+        super.drop()
+        this.pickupIntent = false
     }
 
     showLineSight(targetEntity) {
@@ -102,6 +119,7 @@ export default class Enemy extends Character {
     detectsTarget() {
         if (this.detectsEntity(this.plant)) return this.plant
         if (this.detectsEntity(this.player)) return this.player
+        if (!this.pet.inStartPosition() && this.detectsEntity(this.pet)) return this.pet
         return false
     }
 
@@ -110,4 +128,19 @@ export default class Enemy extends Character {
         this.changeTexture('anim_grandpa')
         this.sprite.animationSpeed = isMoving ? this.speed / 25 : 0
     }
+
+    onCollision(entity, data) {
+        super.onCollision(entity, data)
+        if (this.pickupIntent && entity === this.pet) {
+          this.onPickup(entity)
+        }
+    }
+
+    onPickup(entity) {
+        entity.obstacleEnabled = false
+        this.holding = entity
+        entity.heldBy = this
+        this.speed = 2
+    }
+
 }
