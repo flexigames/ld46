@@ -13,7 +13,7 @@ export default class Plant extends Draggable {
 
     this.addTag('plant')
 
-    this.wants = 'cat'
+    this.wants = 'anim_grandpa'
 
     this.createBubble()
 
@@ -30,7 +30,12 @@ export default class Plant extends Draggable {
     bubble.drawRoundedRect(-28, -123, 56, 56, 10)
     bubble.endFill()
     this.thoughtBubble.addChild(bubble)
-    this.wantsSprite = Plant.createSprite(0, -70, this.wants)
+    this.wantsSprite = Plant.createSprite(0, -120, this.wants, 0, [0.5, 0])
+
+    const mask = bubble.clone()
+
+    this.wantsSprite.mask = mask
+    this.thoughtBubble.addChild(mask)
 
     this.thoughtBubble.addChild(this.wantsSprite)
   }

@@ -105,8 +105,7 @@ export default class Entity {
     Entity.children.forEach((it) => it.update(dt))
   }
 
-  static createSprite(x, y, textureName, animationSpeed, spriteAnchor) {
-    spriteAnchor = spriteAnchor || [0.5, 1]
+  static createSprite(x, y, textureName, animationSpeed = 0, spriteAnchor = [0.5, 1]) {
     let sprite
     const texture = Entity.textures[textureName]
     if (isArray(texture)) {
