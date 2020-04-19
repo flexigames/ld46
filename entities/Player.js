@@ -41,6 +41,7 @@ export default class Player extends Character {
   }
 
   onPickup(entity) {
+    entity.obstacleEnabled = false
     this.holding = entity
     play("cat-hiss")
     entity.heldBy = this
@@ -50,6 +51,7 @@ export default class Player extends Character {
   onDrop(entity) {
     this.holding.setPosition(this.pos.x, this.pos.y + 12)
     this.holding.heldBy = null
+    this.holding.obstacleEnabled = true
     this.holding = null
     this.setSpeed(4)
   }

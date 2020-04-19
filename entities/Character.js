@@ -18,7 +18,7 @@ export default class Character extends Collider {
 
   onCollision(entity, data) {
     super.onCollision(entity)
-    if (entity.is('obstacle')) {
+    if (entity.isObstacle()) {
       this.moveBy(V(-data.overlapV.x, -data.overlapV.y))
     }
   }
