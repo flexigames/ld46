@@ -72,6 +72,10 @@ export default class Entity {
     }
   }
 
+  addTag (tag) {
+    this.tags.push(tag)
+  }
+
   static children = []
 
   static world
