@@ -5,6 +5,7 @@ export default class Player extends Character {
     super(x, y, {
       idleSprite: "anim_senor_idle",
       walkSprite: "anim_senor_run",
+      holdingSpeed: 3,
       animationSpeed: 0.01,
       boundingBox: {
         x: 0,
