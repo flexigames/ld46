@@ -26,6 +26,7 @@ function start() {
 
     const player = new Player(5 * 500, 5 * 500 + 350)
     const plant = new Plant(5 * 500, 5 * 500 + 300)
+    const rat = new Entity(5 * 500, 5 * 500 + 270, { sprite: "anim_rat" })
 
     createWorld(10, 10)
 
@@ -41,6 +42,7 @@ function start() {
       Collider.check()
       player.setDirection(input.getDirection())
       camera.update(dt)
+      rat.setPosition(rat.pos.x + 2 * dt, rat.pos.y)
       hud.update()
     }
   }
