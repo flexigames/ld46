@@ -20,6 +20,10 @@ export default class Enemy extends Character {
         this.detectionRange = 220
         this.cooldownRange = 270
         this.following = false
+
+        setInterval(() => {
+            this.sprite.scale.x = -this.sprite.scale.x
+        }, 3000)
     }
 
     update(dt) {
@@ -29,7 +33,7 @@ export default class Enemy extends Character {
 
     followPlayerInRange() {
       if (
-        (this.player.holding && this.pos.distance(this.player.pos) < this.detectionRange) ||
+        (this.player.holding && this.detectsPlayer()) ||
         (this.following && this.pos.distance(this.player.pos) < this.cooldownRange)
       ) {
           this.following = true
@@ -39,5 +43,10 @@ export default class Enemy extends Character {
           this.following = false
           this.setDirection(V(0, 0))
       }
+    }
+
+    detectsPlayer() {
+        const directionMatches = this.sprite.scale.x > 0 ? this.player.pos.x - this.pos.x < 0 : this.player.pos.x - this.pos.x > 0
+        return directionMatches && this.pos.distance(this.player.pos) < this.detectionRange
     }
 }
