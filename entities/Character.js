@@ -11,6 +11,7 @@ export default class Character extends Collider {
 
     this.walkSprite = walkSprite
     this.idleSprite = idleSprite
+    this.sprite.scale.x = -1
 
     this.speed = walkingSpeed
     this.holdingSpeed = holdingSpeed

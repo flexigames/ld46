@@ -8,8 +8,15 @@ import * as input from "./lib/input"
 import Camera from "./lib/camera"
 import createWorld from "./lib/world"
 import HUD from "./lib/hud"
+import WebFont from 'webfontloader'
 
-start()
+WebFont.load({
+  custom: {
+    families: ['Silkscreen'],
+    urls: ['/assets/fonts/fonts.css']
+  },
+  active: start
+})
 
 function start() {
   const app = createApp()
@@ -24,7 +31,7 @@ function start() {
     Entity.init(camera.getStage(), textures)
     Collider.init()
 
-    const player = new Player(5 * 500, 5 * 500 + 350)
+    const player = new Player(5 * 500 - 150, 5 * 500 + 300)
     const plant = new Plant(5 * 500, 5 * 500 + 300)
 
     createWorld(10, 10)
