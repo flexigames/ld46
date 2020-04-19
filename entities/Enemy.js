@@ -80,7 +80,7 @@ export default class Enemy extends Character {
         } else if (wouldFollow && detectedTarget) {
             if (detectedTarget !== this.pet) this.drop()
             this.following = detectedTarget
-            this.knowsPlayer = true
+            this.knowsPlayer = detectedTarget === this.player
             this.setDirection(detectedTarget.pos.subtract(this.pos))
             this.pickupIntent = detectedTarget === this.pet
         } else {
