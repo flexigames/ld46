@@ -1,23 +1,23 @@
 import Collider from "./Collider"
 import play from "../lib/audio"
 import Draggable from "./Draggable"
-import  * as PIXI from 'pixi.js'
+import * as PIXI from "pixi.js"
 
-import {sample}  from 'lodash'
+import { sample } from "lodash"
 
 const snacks = [
   {
-    tag: 'rat',
-    sprite: 'anim_rat_01'
+    tag: "rat",
+    sprite: "anim_rat_01",
   },
   {
-    tag: 'cat',
-    sprite: 'cat'
+    tag: "cat",
+    sprite: "cat",
   },
   {
-    tag: 'pie',
-    sprite: 'pie'
-  }
+    tag: "pie",
+    sprite: "pie",
+  },
 ]
 
 export default class Plant extends Draggable {
@@ -28,7 +28,7 @@ export default class Plant extends Draggable {
       ...opts,
     })
 
-    this.addTag('plant')
+    this.addTag("plant")
 
     this.wants = sample(snacks)
 
@@ -47,7 +47,10 @@ export default class Plant extends Draggable {
     bubble.drawRoundedRect(-28, -123, 56, 56, 10)
     bubble.endFill()
     this.thoughtBubble.addChild(bubble)
-    this.wantsSprite = Plant.createSprite(0, -95, this.wants.sprite, 0, [0.5, 0.5])
+    this.wantsSprite = Plant.createSprite(0, -95, this.wants.sprite, 0, [
+      0.5,
+      0.5,
+    ])
 
     const mask = bubble.clone()
 
@@ -60,7 +63,7 @@ export default class Plant extends Draggable {
   update(dt) {
     super.update(dt)
     this.health = Math.max(0, this.health - 0.02)
-    this.thoughtBubble.y = Math.round(Math.sin(Date.now()/ 350) * 2) * 2
+    this.thoughtBubble.y = Math.round(Math.sin(Date.now() / 350) * 2) * 2
   }
 
   setWants(wants) {
