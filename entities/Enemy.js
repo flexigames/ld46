@@ -5,9 +5,9 @@ import * as PIXI from 'pixi.js'
 export default class Enemy extends Character {
     constructor(x, y, opts = {}) {
         super(x, y, {
-            sprite: "anim_senor_idle",
+            sprite: "anim_grandpa",
             speed: 2,
-            animationSpeed: 0.01,
+            animationSpeed: 0,
             boundingBox: {
                 x: 0,
                 y: 0,
@@ -80,4 +80,10 @@ export default class Enemy extends Character {
         const directionMatches = this.sprite.scale.x > 0 ? this.player.pos.x - this.pos.x < 0 : this.player.pos.x - this.pos.x > 0
         return directionMatches && this.pos.distance(this.player.pos) < this.detectionRange
     }
+
+    onMoveChange(isMoving) {
+        this.isMoving = isMoving
+        this.changeTexture('anim_grandpa')
+        this.sprite.animationSpeed = isMoving ? this.speed / 25 : 0
+      }
 }
