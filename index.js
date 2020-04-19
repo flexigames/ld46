@@ -30,13 +30,16 @@ function start() {
 
     const player = new Player(5 * 500, 5 * 500 + 350)
     const plant = new Plant(5 * 500, 5 * 500 + 300)
-    const street1 = new Entity(5 * 500, 5 * 500, {sprite: "street"})
-    const street2 = new Entity(5 * 500 + 96 * 3, 5 * 500, {sprite: "street-crossing"})
-    const street3 = new Entity(5 * 500 + 96 * 3, 5 * 500 + 96 * 3, {sprite: "street-vertical"})
-    street1.sprite.zIndex = 0
+    const street = new Entity(5 * 470, 5 * 568, { sprite: "street-horizontal" })
+    const street2 = new Entity(5 * 470 + 3 * 128, 5 * 568, {
+      sprite: "street-crossing",
+    })
+    const street3 = new Entity(5 * 470 + 3 * 128, 5 * 568 + 3 * 128, {
+      sprite: "street-vertical",
+    })
+    street.sprite.zIndex = 0
     street2.sprite.zIndex = 0
     street3.sprite.zIndex = 0
-
 
     createWorld(10, 10)
 
