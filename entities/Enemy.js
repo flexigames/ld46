@@ -1,5 +1,6 @@
 import Character from "./Character";
 import V from '../lib/vec2'
+import * as PIXI from 'pixi.js'
 
 export default class Enemy extends Character {
     constructor(x, y, opts = {}) {
@@ -21,6 +22,12 @@ export default class Enemy extends Character {
         this.cooldownRange = 270
         this.following = false
 
+        const line = new PIXI.Graphics()
+        this.sightLine = line
+        this.sightLine.zIndex = 90000
+        this.sightLine.alpha = 0.2
+        Enemy.world.addChild(line)
+
         setInterval(() => {
             this.sprite.scale.x = -this.sprite.scale.x
         }, 3000)
@@ -32,17 +39,32 @@ export default class Enemy extends Character {
     }
 
     followPlayerInRange() {
-      if (
-        (this.player.holding && this.detectsPlayer()) ||
-        (this.following && this.pos.distance(this.player.pos) < this.cooldownRange)
-      ) {
-          this.following = true
-          const direction = this.player.pos.subtract(this.pos)
-          this.setDirection(direction)
-      } else {
-          this.following = false
-          this.setDirection(V(0, 0))
-      }
+        if (this.following || this.detectsPlayer()) {
+            const start = V(this.pos.x, this.pos.y - 50)
+            const target = V(this.player.pos.x, this.player.pos.y - 50)
+            const offset = target.sub(start).normalize().multiply(20)
+            const sightStart = start.add(offset)
+            this.sightLine.visible = true
+            this.sightLine.clear()
+            this.sightLine.moveTo(sightStart.x, sightStart.y)
+            this.sightLine.lineStyle(20, 0x000000)
+            const sightEnd = target.sub(offset)
+            this.sightLine.lineTo(sightEnd.x, sightEnd.y)
+        } else {
+            this.sightLine.visible = false
+        }
+
+        if (
+            (this.player.holding && this.detectsPlayer()) ||
+            (this.following && this.pos.distance(this.player.pos) < this.cooldownRange)
+        ) {
+            this.following = true
+            const direction = this.player.pos.subtract(this.pos)
+            this.setDirection(direction)
+        } else {
+            this.following = false
+            this.setDirection(V(0, 0))
+        }
     }
 
     detectsPlayer() {
