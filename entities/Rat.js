@@ -4,6 +4,8 @@ export default class Rat extends Draggable {
     constructor(x, y, opts = {}) {
         super(x, y, {sprite: 'anim_rat', ...opts})
 
+        this.addTag('rat')
+
         this.moveDirectionX = 1
         this.distance = 0
         this.maxDistance = 300
@@ -17,7 +19,7 @@ export default class Rat extends Draggable {
         if (this.distance >= this.maxDistance) {
             this.moveDirectionX *= -1
             this.distance = 0
-            this.sprite.scale.x = this.moveDirectionX
+            this.sprite.scale.x = -this.moveDirectionX
         }
         this.setPosition(this.pos.x + distance * this.moveDirectionX, this.pos.y)
     }

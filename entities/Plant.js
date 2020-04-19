@@ -5,7 +5,20 @@ import  * as PIXI from 'pixi.js'
 
 import {sample}  from 'lodash'
 
-const possibleSnacks = ['anim_rat', 'cat', 'pie']
+const snacks = [
+  {
+    tag: 'rat',
+    sprite: 'anim_rat_01'
+  },
+  {
+    tag: 'cat',
+    sprite: 'cat'
+  },
+  {
+    tag: 'pie',
+    sprite: 'pie'
+  }
+]
 
 export default class Plant extends Draggable {
   constructor(x, y, opts = {}) {
@@ -17,7 +30,7 @@ export default class Plant extends Draggable {
 
     this.addTag('plant')
 
-    this.wants = sample(possibleSnacks)
+    this.wants = sample(snacks)
 
     this.createBubble()
 
@@ -34,7 +47,7 @@ export default class Plant extends Draggable {
     bubble.drawRoundedRect(-28, -123, 56, 56, 10)
     bubble.endFill()
     this.thoughtBubble.addChild(bubble)
-    this.wantsSprite = Plant.createSprite(0, -95, this.wants, 0, [0.5, 0.5])
+    this.wantsSprite = Plant.createSprite(0, -95, this.wants.sprite, 0, [0.5, 0.5])
 
     const mask = bubble.clone()
 
@@ -52,7 +65,7 @@ export default class Plant extends Draggable {
 
   setWants(wants) {
     this.wants = wants
-    this.wantsSprite.texture = Plant.textures[wants]
+    this.wantsSprite.texture = Plant.textures[wants.sprite]
   }
 
   onCollision(entity, data) {
@@ -61,8 +74,8 @@ export default class Plant extends Draggable {
       this.health = Math.min(this.maxHealth, this.health + 20)
       play("snack")
       entity.destroy()
-      if (entity.is(this.wants)) {
-        this.setWants(sample(possibleSnacks))
+      if (entity.is(this.wants.tag)) {
+        this.setWants(sample(snacks))
       }
     }
   }
