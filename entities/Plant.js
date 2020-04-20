@@ -51,6 +51,8 @@ export default class Plant extends Draggable {
 
     this.thinking = false
 
+    this.healthReduction = 0.02
+
     this.thoughtBubble = new PIXI.Container()
 
     this.playTexts(texts, () => {
@@ -123,7 +125,7 @@ export default class Plant extends Draggable {
 
   update(dt) {
     super.update(dt)
-    this.health = Math.max(0, this.health - 0.02)
+    this.health = Math.max(0, this.health - this.healthReduction)
     if (this.health <= 0) this.onDeath('plantdead')
     if (this.thinking) this.bubbleInner.y = Math.round(Math.sin(Date.now() / 350) * 2) * 2
    }

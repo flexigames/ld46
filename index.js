@@ -9,6 +9,7 @@ import Camera from "./lib/camera"
 import createWorld from "./lib/world"
 import HUD from "./lib/hud"
 import WebFont from 'webfontloader'
+import GameOver from "./lib/gameover"
 
 WebFont.load({
   custom: {
@@ -31,27 +32,36 @@ function start() {
     let plant
     let hud
     let camera
+    let gameover
+    let paused = false
+
+    Collider.init()
 
     function startGame() {
       camera = new Camera(app.stage)
 
+
       Entity.init(camera.getStage(), textures)
-      Collider.init()
 
       player = new Player(5 * 500 - 150, 5 * 500 + 300)
       plant = new Plant(5 * 500, 5 * 500 + 300)
 
-      player.onDeath = restartGame
-      plant.onDeath = restartGame
+      player.onDeath = onGameOver
+      plant.onDeath = onGameOver
     
       createWorld(10, 10)
     
       hud = new HUD(app.stage, textures, { plant })
+      gameover = new GameOver(app.stage, restartGame)
+
+      function onGameOver(reason) {
+        gameover.set(reason)
+      }
+  
     
       camera.follow(player)
-      input.init(player)
+      input.init(player, gameover)
     }
-
     function restartGame() {
       clearGame()
       startGame()
@@ -68,9 +78,11 @@ function start() {
     app.ticker.add(gameLoop)
 
     function gameLoop(dt) {
-      Entity.updateAll(dt)
-      Collider.check()
-      player.setDirection(input.getDirection())
+      if (!paused) {
+        Entity.updateAll(dt)
+        Collider.check()
+        player.setDirection(input.getDirection())
+      }
       camera.update(dt)
       hud.update()
     }

@@ -32,14 +32,10 @@ export default class Player extends Character {
     }
   }
 
-  onDeath() {
-    // overwrite
-  }
-
   onCollision(entity, data) {
     super.onCollision(entity, data)
     if (entity.is('enemy')) {
-      this.onDeath('enemy')
+      this.onDeath('neighbor')
     }
     if (this.pickupIntent && !this.holding && entity.is("draggable")) {
       this.pickup(entity)
