@@ -11,6 +11,7 @@ import HUD from "./lib/hud"
 import WebFont from 'webfontloader'
 import GameOver from "./lib/gameover"
 import Intro from "./lib/Intro"
+import { playBackground } from "./lib/audio"
 
 WebFont.load({
   custom: {
@@ -26,6 +27,8 @@ function start() {
 
   function setup(loader, resources) {
     const textures = parseTextures(resources["spritesheet.json"].textures)
+
+    playBackground()
 
     app.stage.sortableChildren = true
 
