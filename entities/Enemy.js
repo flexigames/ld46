@@ -79,7 +79,9 @@ export default class Enemy extends Character {
     }
 
     const wouldFollow =
-      detectedTarget !== this.player || this.knowsPlayer || this.player.holding instanceof Possession
+      detectedTarget !== this.player ||
+      this.knowsPlayer ||
+      this.player.holding instanceof Possession
 
     if (
       this.following &&
