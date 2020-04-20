@@ -57,6 +57,7 @@ export default class Plant extends Draggable {
 
     this.playTexts(texts, () => {
       this.setWants(snacks[0])
+      this.onIntroEnd()
     })
   }
 
