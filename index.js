@@ -62,7 +62,12 @@ function start() {
       hud = new HUD(app.stage, textures, { plant })
       gameover = new GameOver(app.stage, restartGame)
 
-      intro = new Intro({ camera, player, plant, setPause, stage: app.stage })
+      if (!intro) {
+        intro = new Intro({ camera, player, plant, setPause, stage: app.stage })
+      } else {
+        camera.follow(player)
+        plant.setWants(0)
+      }
 
       function onGameOver(reason) {
         gameover.set(reason)
