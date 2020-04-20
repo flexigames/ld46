@@ -23,7 +23,7 @@ export default class Character extends Collider {
     super.update(dt)
     this.setPosition(this.pos.add(this.direction.multiply(this.speed * dt)))
     if (this.holding) {
-      this.holding.setPosition(this.pos.x, this.pos.y - 12)
+      this.holding.setPosition(this.pos.x + (-this.sprite.scale.x * 10), this.pos.y - 12)
       this.holding.sprite.zIndex = this.pos.y + 1
       this.holding.sprite.scale.x = this.sprite.scale.x
     }

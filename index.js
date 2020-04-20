@@ -51,8 +51,8 @@ function start() {
 
       Entity.init(camera.getStage(), textures)
 
-      player = new Player(2 * 500 + 220, 2 * 500 + 130)
-      plant = new Plant(2 * 500 + 300, 2 * 500 + 130)
+      player = new Player(2 * 500 + 200, 2 * 500 + 130)
+      plant = new Plant(2 * 500 + 350, 2 * 500 + 130)
 
       player.onDeath = onGameOver
       plant.onDeath = onGameOver

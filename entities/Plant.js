@@ -21,15 +21,6 @@ const snacks = [
   }
 ]
 
-
-const texts = [
-  'u kno what?',
-  'im rlly hungry!',
-  'get me some..',
-  'hmmmm..',
-  'meat pie!'
-]
-
 export default class Plant extends Draggable {
   constructor(x, y, opts = {}) {
     super(x, y, {
@@ -48,59 +39,9 @@ export default class Plant extends Draggable {
 
     this.snackIndex = 0
 
-    this.textSpeed = 2000
-
     this.thinking = false
 
     this.healthReduction = 0.02
-
-    this.thoughtBubble = new PIXI.Container()
-
-    this.playTexts(texts, () => {
-      this.setWants(snacks[0])
-      this.onIntroEnd()
-    })
-  }
-
-  playTexts(texts, onEnd, startIndex = 0) {
-    if (texts.length === 0) return onEnd()
-    const [text, ...rest] = texts
-    this.setText(text)
-    setTimeout(() => {
-      this.playTexts(rest, onEnd)
-    }, this.textSpeed)
-  }
-
-  setText(text) {
-    this.removeBubble()
-    const container = createText(text)
-    container.y = 27 - container.height/2
-    const bubble = this.createBubbleBackground(container.width)
-    bubble.addChild(container)
-  }
-
-  removeBubble() {
-    this.thoughtBubble.removeChildren()
-  }
-
-  createBubbleBackground(width) {
-    this.thoughtBubble.x = -width / 2
-    this.thoughtBubble.y = -this.sprite.height - 70
-    this.sprite.addChild(this.thoughtBubble)
-
-    const inner = new PIXI.Container()
-    this.thoughtBubble.addChild(inner)
-    this.bubbleInner = inner
-
-
-    const bubble = new PIXI.Graphics()
-    bubble.beginFill(0xffffff)
-    bubble.drawRoundedRect(-5, 0, width + 10, 56, 10)
-    bubble.endFill()
-    inner.addChild(bubble)
-    this.bubbleGraphic = bubble
-
-    return inner
   }
 
   createBubble() {
@@ -130,9 +71,11 @@ export default class Plant extends Draggable {
     this.health = Math.max(0, this.health - this.healthReduction)
     if (this.health <= 0) this.onDeath('plantdead')
     if (this.thinking) this.bubbleInner.y = Math.round(Math.sin(Date.now() / 350) * 2) * 2
-   }
+  }
 
-   setWants(wants) {
+  setWants(wants) {
+    wants = snacks[wants]
+
     this.thinking = true
     this.removeBubble()
     this.wants = wants
@@ -165,7 +108,7 @@ export default class Plant extends Draggable {
         this.changeTexture('anim_big_plant')
       }
 
-      this.setWants(snacks[Math.min(this.snackIndex, snacks.length - 1)])
+      this.setWants(Math.min(this.snackIndex, snacks.length - 1))
     }
   }
 }

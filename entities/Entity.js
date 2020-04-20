@@ -1,6 +1,7 @@
 import V from "../lib/vec2"
 import * as PIXI from "pixi.js"
 import { isArray } from "lodash"
+import createText from '../lib/text'
 
 export default class Entity {
   constructor(x, y, opts = {}) {
@@ -22,6 +23,10 @@ export default class Entity {
       animationSpeed,
       spriteAnchor
     )
+
+    this.textSpeed = 2000
+
+    this.thoughtBubble = new PIXI.Container()
 
     Entity.create(this)
   }
@@ -76,6 +81,55 @@ export default class Entity {
 
   addTag (tag) {
     this.tags.push(tag)
+  }
+
+  // Bubble Stuff
+
+  playTexts(texts) {
+    if (texts.length === 0) {
+      this.removeBubble()
+      return Promise.resolve()
+    }
+    const [text, ...rest] = texts
+    return new Promise(resolve => {
+      this.setText(text)
+      setTimeout(() => {
+        this.playTexts(rest).then(resolve)
+      }, this.textSpeed)
+    })
+  }
+
+  setText(text) {
+    this.removeBubble()
+    const container = createText(text)
+    container.y = 27 - container.height / 2
+    const bubble = this.createBubbleBackground(container.width)
+    bubble.addChild(container)
+  }
+
+  removeBubble() {
+    this.thoughtBubble.removeChildren()
+  }
+
+
+  createBubbleBackground(width) {
+    this.thoughtBubble.x = -width / 2
+    this.thoughtBubble.y = -this.sprite.height - 70
+    this.sprite.addChild(this.thoughtBubble)
+
+    const inner = new PIXI.Container()
+    this.thoughtBubble.addChild(inner)
+    this.bubbleInner = inner
+
+
+    const bubble = new PIXI.Graphics()
+    bubble.beginFill(0xffffff)
+    bubble.drawRoundedRect(-5, 0, width + 10, 56, 10)
+    bubble.endFill()
+    inner.addChild(bubble)
+    this.bubbleGraphic = bubble
+
+    return inner
   }
 
   static children = []
