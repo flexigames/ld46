@@ -45,9 +45,10 @@ export default class Plant extends Draggable {
     this.maxHealth = 100
     this.health = 100
 
-    this.textSpeed = 2000
 
-    this.numberFed = 0
+    this.snackIndex = 0
+
+    this.textSpeed = 2000
 
     this.thinking = false
 
@@ -84,7 +85,7 @@ export default class Plant extends Draggable {
 
   createBubbleBackground(width) {
     this.thoughtBubble.x = -width / 2
-    this.thoughtBubble.y = -123
+    this.thoughtBubble.y = -this.sprite.height - 70
     this.sprite.addChild(this.thoughtBubble)
 
     const inner = new PIXI.Container()
@@ -144,7 +145,7 @@ export default class Plant extends Draggable {
 
 
     const bubble = this.createBubbleBackground(item.width)
-    const mask = this.bubbleGraphic .clone()
+    const mask = this.bubbleGraphic.clone()
     item.mask = mask
     bubble.addChild(mask)
     bubble.addChild(item)
@@ -156,11 +157,15 @@ export default class Plant extends Draggable {
       this.health = Math.min(this.maxHealth, this.health + 20)
       play("snack")
       entity.destroy()
-      this.setWants(sample(snacks))
-      this.numberFed++
-      if (this.numberFed >= 2) {
+      this.snackIndex += 1
+
+      if (this.snackIndex === 1) {
         this.changeTexture('anim_carnivorous_plant_idle')
+      } else if (this.snackIndex === 2) {
+        this.changeTexture('anim_big_plant')
       }
+
+      this.setWants(snacks[Math.min(this.snackIndex, snacks.length - 1)])
     }
   }
 }
