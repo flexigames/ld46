@@ -4,7 +4,7 @@ import Entity from "./entities/Entity"
 import Collider from "./entities/Collider"
 import Player from "./entities/Player"
 import Plant from "./entities/Plant"
-import * as input from "./lib/input"
+import Input from "./lib/input"
 import Camera from "./lib/camera"
 import createWorld from "./lib/world"
 import HUD from "./lib/hud"
@@ -39,6 +39,7 @@ function start() {
     let gameover
     let paused = true
     let intro
+    let input
 
     function setPause(p) {
       paused = p
@@ -73,7 +74,8 @@ function start() {
         gameover.set(reason)
       }
 
-      input.init(player, gameover)
+      input = new Input(player, gameover)
+
     }
     function restartGame() {
       clearGame()
