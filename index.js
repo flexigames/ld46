@@ -8,17 +8,17 @@ import * as input from "./lib/input"
 import Camera from "./lib/camera"
 import createWorld from "./lib/world"
 import HUD from "./lib/hud"
-import WebFont from 'webfontloader'
+import WebFont from "webfontloader"
 import GameOver from "./lib/gameover"
 import Intro from "./lib/Intro"
 import { playBackground } from "./lib/audio"
 
 WebFont.load({
   custom: {
-    families: ['Silkscreen'],
-    urls: ['/assets/fonts/fonts.css']
+    families: ["Silkscreen"],
+    urls: ["/assets/fonts/fonts.css"],
   },
-  active: start
+  active: start,
 })
 
 function start() {
@@ -48,27 +48,26 @@ function start() {
 
     function startGame() {
       camera = new Camera(app.stage)
-      
-      
+
       Entity.init(camera.getStage(), textures)
-      
-      player = new Player(5 * 500 - 150, 5 * 500 + 300)
-      plant = new Plant(5 * 500, 5 * 500 + 300)
-      
+
+      player = new Player(2 * 500 + 220, 2 * 500 + 130)
+      plant = new Plant(2 * 500 + 300, 2 * 500 + 130)
+
       player.onDeath = onGameOver
       plant.onDeath = onGameOver
-      
-      createWorld(10, 10)
-      
+
+      createWorld(6, 6)
+
       hud = new HUD(app.stage, textures, { plant })
       gameover = new GameOver(app.stage, restartGame)
 
-      intro = new Intro({camera, player, plant, setPause, stage: app.stage})
-      
+      intro = new Intro({ camera, player, plant, setPause, stage: app.stage })
+
       function onGameOver(reason) {
         gameover.set(reason)
       }
-  
+
       input.init(player, gameover)
     }
     function restartGame() {
@@ -76,7 +75,7 @@ function start() {
       startGame()
     }
 
-    function clearGame () {
+    function clearGame() {
       app.stage.removeChildren()
       Entity.clear()
       Collider.clear()
@@ -98,8 +97,6 @@ function start() {
     }
   }
 }
-
-
 
 function createApp() {
   const app = new PIXI.Application({
