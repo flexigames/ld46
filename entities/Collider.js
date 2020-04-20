@@ -75,6 +75,10 @@ export default class Collider extends Entity {
     Collider.crash.check()
   }
 
+  static clear() {
+    Collider.crash.clear()
+  }
+
   static init() {
     Collider.crash.onCollision((a, b, data) => {
       a.data.entity.onCollision(b.data.entity, data)

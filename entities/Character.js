@@ -72,4 +72,6 @@ export default class Character extends Collider {
     this.changeTexture(isMoving ? this.walkSprite : this.idleSprite)
     this.sprite.animationSpeed = isMoving ? this.speed / 25 : 0.01
   }
+
+  onDeath(reason) {}
 }

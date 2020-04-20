@@ -26,21 +26,45 @@ function start() {
     const textures = parseTextures(resources["spritesheet.json"].textures)
 
     app.stage.sortableChildren = true
-    const camera = new Camera(app.stage)
 
-    Entity.init(camera.getStage(), textures)
-    Collider.init()
+    let player
+    let plant
+    let hud
+    let camera
 
-    const player = new Player(5 * 500 - 150, 5 * 500 + 300)
-    const plant = new Plant(5 * 500, 5 * 500 + 300)
+    function startGame() {
+      camera = new Camera(app.stage)
 
-    createWorld(10, 10)
+      Entity.init(camera.getStage(), textures)
+      Collider.init()
 
-    const hud = new HUD(app.stage, textures, { plant })
+      player = new Player(5 * 500 - 150, 5 * 500 + 300)
+      plant = new Plant(5 * 500, 5 * 500 + 300)
 
-    camera.follow(player)
+      player.onDeath = restartGame
+      plant.onDeath = restartGame
+    
+      createWorld(10, 10)
+    
+      hud = new HUD(app.stage, textures, { plant })
+    
+      camera.follow(player)
+      input.init(player)
+    }
 
-    input.init(player)
+    function restartGame() {
+      clearGame()
+      startGame()
+    }
+
+    function clearGame () {
+      app.stage.removeChildren()
+      Entity.clear()
+      Collider.clear()
+    }
+
+    startGame()
+
     app.ticker.add(gameLoop)
 
     function gameLoop(dt) {
@@ -52,6 +76,8 @@ function start() {
     }
   }
 }
+
+
 
 function createApp() {
   const app = new PIXI.Application({

@@ -124,6 +124,7 @@ export default class Plant extends Draggable {
   update(dt) {
     super.update(dt)
     this.health = Math.max(0, this.health - 0.02)
+    if (this.health <= 0) this.onDeath('plantdead')
     if (this.thinking) this.bubbleInner.y = Math.round(Math.sin(Date.now() / 350) * 2) * 2
    }
 
