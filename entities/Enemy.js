@@ -135,7 +135,7 @@ export default class Enemy extends Character {
   }
 
   detectsTarget() {
-    // if (this.detectsEntity(this.plant)) return this.plant
+    if (this.detectsEntity(this.plant)) return this.plant
     if (this.detectsEntity(this.player)) return this.player
     if (
       !this.possession.inStartPosition() &&
