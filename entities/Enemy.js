@@ -1,6 +1,7 @@
 import Character from "./Character"
 import V from "../lib/vec2"
 import * as PIXI from "pixi.js"
+import Possession from "./Possession"
 
 export default class Enemy extends Character {
   constructor(x, y, opts = {}) {
@@ -78,7 +79,7 @@ export default class Enemy extends Character {
     }
 
     const wouldFollow =
-      detectedTarget !== this.player || this.knowsPlayer || this.player.holding
+      detectedTarget !== this.player || this.knowsPlayer || this.player.holding instanceof Possession
 
     if (
       this.following &&
@@ -132,7 +133,7 @@ export default class Enemy extends Character {
   }
 
   detectsTarget() {
-    if (this.detectsEntity(this.plant)) return this.plant
+    // if (this.detectsEntity(this.plant)) return this.plant
     if (this.detectsEntity(this.player)) return this.player
     if (
       !this.possession.inStartPosition() &&
