@@ -37,7 +37,7 @@ function start() {
     let hud
     let camera
     let gameover
-    let paused = true
+    let paused = false
 
     function setPause(p) {
       paused = p
@@ -62,14 +62,14 @@ function start() {
       hud = new HUD(app.stage, textures, { plant })
       gameover = new GameOver(app.stage, restartGame)
 
-      new Intro({camera, player, plant, setPause})
+      // new Intro({camera, player, plant, setPause})
       
       function onGameOver(reason) {
         gameover.set(reason)
       }
   
     
-      // camera.follow(player)
+      camera.follow(player)
       input.init(player, gameover)
     }
     function restartGame() {
