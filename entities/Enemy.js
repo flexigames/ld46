@@ -9,7 +9,7 @@ export default class Enemy extends Character {
     super(x, y, {
       walkSprite: "anim_grandpa",
       idleSprite: "anim_grandpa",
-      walkingSpeed: 2,
+      walkingSpeed: 3,
       animationSpeed: 0,
       boundingBox: {
         x: 0,
