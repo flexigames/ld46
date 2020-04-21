@@ -1,5 +1,4 @@
 import Collider from "./Collider"
-import play from "../lib/audio"
 import Draggable from "./Draggable"
 import * as PIXI from "pixi.js"
 import createText from '../lib/text'
@@ -101,7 +100,6 @@ export default class Plant extends Draggable {
     }
     if (entity.is("draggable") && !entity.heldBy && entity.is(this.wants.tag)) {
       this.health = this.maxHealth
-      play("snack")
       entity.destroy()
       this.snackIndex += 1
 
