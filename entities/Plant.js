@@ -109,6 +109,8 @@ export default class Plant extends Draggable {
         this.changeTexture('anim_carnivorous_plant_idle')
       } else if (this.snackIndex === 2) {
         this.changeTexture('anim_big_plant')
+      } else {
+        this.onEnd()
       }
 
       this.setWants(Math.min(this.snackIndex, snacks.length - 1))

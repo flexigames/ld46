@@ -12,6 +12,7 @@ import WebFont from "webfontloader"
 import GameOver from "./lib/gameover"
 import Intro from "./lib/Intro"
 import { playBackground } from "./lib/audio"
+import Outro from "./lib/Outro"
 
 WebFont.load({
   custom: {
@@ -40,6 +41,7 @@ function start() {
     let paused = true
     let intro
     let input
+    let outro
 
     function setPause(p) {
       paused = p
@@ -57,6 +59,11 @@ function start() {
 
       player.onDeath = onGameOver
       plant.onDeath = onGameOver
+      outro = new Outro(plant, player, camera, app.stage)
+      plant.onEnd = () => {
+        paused = true
+        outro.start()
+      }
 
       createWorld(6, 6)
 
@@ -101,6 +108,7 @@ function start() {
       camera.update(dt)
       hud.update()
       intro.update(dt)
+      outro.update(dt)
     }
   }
 }
