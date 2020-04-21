@@ -49,14 +49,23 @@ function start() {
 
     Collider.init()
 
+    const titleScreen = new PIXI.AnimatedSprite(textures['anim_title-screen'])
+    titleScreen.width = 512
+    titleScreen.height = 512
+    app.stage.addChild(titleScreen)
+    Input.onAnyKeyOnce(() => {
+      startGame()
+      titleScreen.visible = false
+    })
+
     function startGame() {
       camera = new Camera(app.stage)
-
+      
       Entity.init(camera.getStage(), textures)
-
+      
       player = new Player(2 * 500 + 200, 2 * 500 + 130)
       plant = new Plant(2 * 500 + 350, 2 * 500 + 130)
-
+      
       player.onDeath = onGameOver
       plant.onDeath = onGameOver
       outro = new Outro(plant, player, camera, app.stage)
@@ -64,25 +73,26 @@ function start() {
         paused = true
         outro.start()
       }
-
+      
       createWorld(6, 6)
-
+      
       hud = new HUD(app.stage, textures, { plant })
       gameover = new GameOver(app.stage, restartGame)
-
+      
       if (!intro) {
         intro = new Intro({ camera, player, plant, setPause, stage: app.stage })
       } else {
         camera.follow(player)
         plant.setWants(0)
       }
-
+      
       function onGameOver(reason) {
         gameover.set(reason)
       }
-
+      
       input = new Input(player, gameover)
-
+      
+      app.ticker.add(gameLoop)
     }
     function restartGame() {
       clearGame()
@@ -95,9 +105,7 @@ function start() {
       Collider.clear()
     }
 
-    startGame()
-
-    app.ticker.add(gameLoop)
+    // startGame()
 
     function gameLoop(dt) {
       if (!paused) {

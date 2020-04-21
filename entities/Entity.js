@@ -24,7 +24,7 @@ export default class Entity {
       spriteAnchor
     )
 
-    this.textSpeed = 2000
+    this.textSpeed = 1500
 
     this.thoughtBubble = new PIXI.Container()
 
