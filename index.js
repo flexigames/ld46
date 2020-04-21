@@ -55,6 +55,7 @@ function start() {
     app.stage.addChild(titleScreen)
     Input.onAnyKeyOnce(() => {
       startGame()
+      app.ticker.add(gameLoop)
       titleScreen.visible = false
     })
 
@@ -91,8 +92,6 @@ function start() {
       }
       
       input = new Input(player, gameover)
-      
-      app.ticker.add(gameLoop)
     }
     function restartGame() {
       clearGame()
@@ -104,8 +103,6 @@ function start() {
       Entity.clear()
       Collider.clear()
     }
-
-    // startGame()
 
     function gameLoop(dt) {
       if (!paused) {
